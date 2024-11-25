@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-filmotheque( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
+
+<title>Connexion</title>
+
+<th:block id="ressources-css">
+	<link id="formCss" rel="stylesheet" data-th-href="@{/css/tp-form.css}">
+	<link id="ErrorCss" rel="stylesheet" data-th-href="@{/css/tp-error.css}">
+</th:block>
+
+<main>
+
+	<form data-th-action="@{/login}" method="post">
+		<h1>Se connecter</h1>
+		<label for="login">Identifiant</label> <input type="text" id="login"
+			name="username"> <label for="pw">Mot de passe</label> <input
+			type="password" id="pw" name="password">
+
+		<button type="submit">Se connecter</button>
+
+
+	</form>
+</main>
