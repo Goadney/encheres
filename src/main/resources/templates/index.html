@@ -2,16 +2,20 @@
 <!-- Mise en place du layout -->
 <!-- Accueil comme titre de page -->
 <!-- la balise main définit par la classe de CSS 'center-main' comme paramètre contenuPage -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-encheres( 
+					titrePage=~{:: title},
+					contenuPage=~{:: main},
+					ressourcesSupp=~{})}">
 
 <head>
 <!-- Accueil comme titre de page -->
-<title data-th-text="test"></title>
+<title data-th-text="#{index.title}"></title>
 </head>
 <body>
 	<main class="center-main">
 		<section class="center-section">
-			<h1 style="text-align: center;" data-th-text="BIENVENUE"></h1>
+			<h1 style="text-align: center;" data-th-text="#{index.h1}"></h1>
 		</section>
 	</main>
 </body>
