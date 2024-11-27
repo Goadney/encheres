@@ -10,13 +10,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import fr.eni.ecole.projet.encheres.bll.UtilisateurService;
+import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UtilisateurService utilisateurService;
+    private final UtilisateurServiceImpl utilisateurService;
 
-    public SecurityConfig(UtilisateurService utilisateurService) {
+    public SecurityConfig(UtilisateurServiceImpl utilisateurService) {
         this.utilisateurService = utilisateurService;
     }
 

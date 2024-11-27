@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import fr.eni.ecole.projet.encheres.bll.UtilisateurService;
+import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.ecole.projet.encheres.bo.Adresse;
 import fr.eni.ecole.projet.encheres.bo.InscriptionDTO;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
@@ -32,10 +32,10 @@ import fr.eni.ecole.projet.encheres.bo.VendeurDTO;
 @RequestMapping("/users") 
 public class UtilisateurController {
 
-    private final UtilisateurService utilisateurService;
+    private final UtilisateurServiceImpl utilisateurService;
     private PasswordEncoder passwordEncoder = null;
     @Autowired
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurServiceImpl utilisateurService) {
         this.utilisateurService = utilisateurService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -51,15 +51,15 @@ public class UtilisateurController {
     public ResponseEntity<?> inscrireUtilisateur(@ModelAttribute InscriptionDTO inscriptionDTO) {
         System.out.println("inscription");
         // Vérifier si un utilisateur avec ce pseudo ou email existe déjà
-        if (utilisateurService.getUtilisateurByPseudo(inscriptionDTO.getPseudo()).isPresent()) {
+        if (utilisateurService.findByPseudo(inscriptionDTO.getPseudo()) != null) {
             return ResponseEntity.badRequest().body("Le pseudo est déjà utilisé.");
         }
 
-        if (utilisateurService.getUtilisateurByEmail(inscriptionDTO.getEmail()).isPresent()) {
+
+        if (utilisateurService.findByEmail(inscriptionDTO.getEmail()) != null) {
             return ResponseEntity.badRequest().body("L'email est déjà utilisé.");
         }
 
-        // Créer un nouvel utilisateur
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setPseudo(inscriptionDTO.getPseudo());
         utilisateur.setEmail(inscriptionDTO.getEmail());
@@ -68,7 +68,8 @@ public class UtilisateurController {
         utilisateur.setPrenom(inscriptionDTO.getPrenom());
 
         // Enregistrer l'utilisateur dans la base de données
-        Utilisateur utilisateurEnregistre = utilisateurService.saveUtilisateur(utilisateur);
+        Utilisateur utilisateurEnregistre = utilisateurService.save(utilisateur);
+        System.out.println(utilisateurEnregistre);
 
         // Exemple pour connecter automatiquement l'utilisateur après l'inscription
         Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur, null, Collections.singleton(new SimpleGrantedAuthority("USER")));
@@ -89,25 +90,24 @@ public class UtilisateurController {
             return "redirect:/login"; // Redirige vers la page de login si l'utilisateur n'est pas authentifié
         }
 
-        // Récupérer le pseudo ou l'ID de l'utilisateur authentifié
-        String pseudo = authentication.getName(); // Si tu utilises le pseudo comme identifiant unique
+        String pseudo = authentication.getName(); 
+        System.out.println(pseudo);
         
-        Optional<Utilisateur> utilisateur = utilisateurService.getUtilisateurByPseudo(pseudo);
-        if (utilisateur.isPresent()) {
-            // Ajouter l'utilisateur au modèle pour qu'il soit accessible dans la vue
+        Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
+        if (utilisateur != null) {
+        	System.out.println("utilisateur pas null on ajoute a la vue");
             model.addAttribute("utilisateur", utilisateur.get());
-            return "profil"; // Nom de la vue Thymeleaf (par exemple, profil.html)
+            return "profil"; 
         } else {
-            return "redirect:/login"; // Si l'utilisateur n'est pas trouvé, rediriger vers la page de login
+            return "redirect:/login"; 
         }
     }
 
 
     @GetMapping("/profil/{pseudo}")
     public ResponseEntity<?> afficherProfilVendeur(@PathVariable String pseudo) {
-        Optional<Utilisateur> vendeur = utilisateurService.getUtilisateurByPseudo(pseudo);
-        if (vendeur.isPresent()) {
-            // Renvoyer seulement les informations nécessaires
+        Utilisateur vendeur = utilisateurService.findByPseudo(pseudo);
+        if (vendeur != null) {
             Utilisateur utilisateur = vendeur.get();
             return ResponseEntity.ok(new VendeurDTO(
                     utilisateur.getPseudo(),
@@ -125,7 +125,7 @@ public class UtilisateurController {
     public ResponseEntity<Utilisateur> modifierMonProfil(
             @RequestParam Long userId,
             @RequestBody Utilisateur utilisateurModifie) {
-        Optional<Utilisateur> utilisateurOpt = utilisateurService.getUtilisateurById(userId);
+        Optional<Utilisateur> utilisateurOpt = utilisateurService.findById(userId);
 
         if (utilisateurOpt.isPresent()) {
             Utilisateur utilisateur = utilisateurOpt.get();

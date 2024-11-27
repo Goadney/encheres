@@ -13,13 +13,14 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String telephone;
+    @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
     private int credit;
     private boolean administrateur;
 
     //  one to one  avec addresse
     @OneToOne(cascade = CascadeType.ALL) // psi  on suppr l'user ca suppr l'adresse
-    @JoinColumn(name = "no_adresse")
+    @JoinColumn(name = "no_adresse", referencedColumnName = "no_adresse")
     private Adresse adresse;
 
     public Utilisateur() {
@@ -126,4 +127,13 @@ public class Utilisateur {
                 ", adresse=" + adresse +
                 '}';
     }
+
+	public Utilisateur orElseThrow(Object object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Utilisateur get() {
+		return this;
+	}
 }
