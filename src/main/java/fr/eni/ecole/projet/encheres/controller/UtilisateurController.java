@@ -125,9 +125,9 @@ public class UtilisateurController {
     public ResponseEntity<Utilisateur> modifierMonProfil(
             @RequestParam Long userId,
             @RequestBody Utilisateur utilisateurModifie) {
-        Optional<Utilisateur> utilisateurOpt = utilisateurService.findById(userId);
+        Utilisateur utilisateurOpt = utilisateurService.findById(userId);
 
-        if (utilisateurOpt.isPresent()) {
+        if (utilisateurOpt != null) {
             Utilisateur utilisateur = utilisateurOpt.get();
 
             utilisateur.setNom(utilisateurModifie.getNom());
@@ -144,7 +144,7 @@ public class UtilisateurController {
                 utilisateur.setAdresse(adresse);
             }
 
-            Utilisateur utilisateurMisAJour = utilisateurService.saveUtilisateur(utilisateur);
+            Utilisateur utilisateurMisAJour = utilisateurService.save(utilisateur);
 
             return ResponseEntity.ok(utilisateurMisAJour);
         } else {
