@@ -28,11 +28,11 @@ public class Enchere implements Serializable {
 	private LocalDateTime date;
 	
 	@ManyToOne
-	@JoinColumn(name = "no_article", referencedColumnName = "no_article")
+	@JoinColumn(name = "no_article", referencedColumnName = "no_article", insertable = false, updatable = false)
 	private ArticleAVendre articleAVendre;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_utilisateur", referencedColumnName = "pseudo" )
+	@JoinColumn(name = "id_utilisateur", referencedColumnName = "pseudo", insertable = false, updatable = false)
 	private Utilisateur utilisateur;
 	
 	
