@@ -20,9 +20,6 @@ public class EncheresApplication {
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(EncheresApplication.class, args);
-	    PasswordEncoder encoder = new BCryptPasswordEncoder();
-	    System.out.println(encoder.encode("password"));
-	    System.out.println();
 	    
         String pseudo = "coach_admin";
         System.out.println(s.findByPseudo(pseudo));

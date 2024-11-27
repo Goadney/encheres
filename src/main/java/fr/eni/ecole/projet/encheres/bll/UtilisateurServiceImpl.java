@@ -27,7 +27,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur findByPseudo(String pseudo) {
-	    Optional<Utilisateur> utilisateurOpt = dao.findByEmail(pseudo);
+	    Optional<Utilisateur> utilisateurOpt = dao.findByPseudo(pseudo);
 	    if (utilisateurOpt.isPresent()) {
 	        return utilisateurOpt.get();
 	    } else {
