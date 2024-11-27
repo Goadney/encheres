@@ -64,8 +64,9 @@ public class ArticleAVendre implements Serializable {
 	@JoinColumn(name = "no_adresse_retrait", referencedColumnName = "no_adresse")
 	private Adresse adresse;
 	
-	
-	
+	@ManyToOne
+	@JoinColumn(name = "id_utilisateur", referencedColumnName = "pseudo")
+	private Utilisateur utilisateur;
 	
 	
 	public ArticleAVendre() {
@@ -77,8 +78,9 @@ public class ArticleAVendre implements Serializable {
 			@NotBlank(message = "La date de début des enchères est obligatoire") LocalDate dateDebutEncheres,
 			@NotBlank(message = "La date de fin des enchères est obligatoire") LocalDate dateFinEncheres,
 			@NotBlank(message = "Le statut de l'enchère est obligatoire") int statut,
-			@NotBlank(message = "Le prix initial est obligatoire") int prixInitial, int prixVente,
-			Categorie categorie) {
+			@NotBlank(message = "Le prix initial est obligatoire") int prixInitial, int prixVente, Categorie categorie,
+			Adresse adresse, Utilisateur utilisateur) {
+		super();
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
@@ -88,8 +90,33 @@ public class ArticleAVendre implements Serializable {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.categorie = categorie;
+		this.adresse = adresse;
+		this.utilisateur = utilisateur;
 	}
 
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+	public Adresse getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
 
 	public long getId() {
 		return id;
@@ -191,6 +218,10 @@ public class ArticleAVendre implements Serializable {
 		builder.append(prixVente);
 		builder.append(", categorie=");
 		builder.append(categorie);
+		builder.append(", adresse=");
+		builder.append(adresse);
+		builder.append(", utilisateur=");
+		builder.append(utilisateur);
 		builder.append("]");
 		return builder.toString();
 	}
