@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-encheres( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
+
+<title>Inscription</title>
+
+<main>
+
+		    <h1>Inscription</h1>
+
+	<div class="flex bg-blue-100 justify-center w-1/4 m-auto mt-4 p-8 rounded-lg">
+    
+    <form th:action="@{/users/inscription}" method="post">
+        <div>
+            <label for="pseudo">Pseudo</label>
+            <input type="text" id="pseudo" name="pseudo" required>
+        </div>
+        
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div>
+            <label for="motDePasse">Mot de passe</label>
+            <input type="password" id="motDePasse" name="motDePasse" required>
+        </div>
+        
+        <button type="submit">S'inscrire</button>
+    </form>
+    
+    <p th:if="${param.error}" style="color:red">Une erreur s'est produite. Veuillez réessayer.</p>
+	</div>
+</main>

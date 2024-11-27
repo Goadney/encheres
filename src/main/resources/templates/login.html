@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	data-th-replace="~{layouts/layout :: layout-filmotheque( 
+	data-th-replace="~{layouts/layout :: layout-encheres( 
 						titrePage=~{:: title},
 						contenuPage=~{:: main},
 						ressourcesSupp=~{:: #ressources-css})}">
 
+<head>
 <title>Connexion</title>
-
-<th:block id="ressources-css">
-	<link id="formCss" rel="stylesheet" data-th-href="@{/css/tp-form.css}">
-	<link id="ErrorCss" rel="stylesheet" data-th-href="@{/css/tp-error.css}">
-</th:block>
-
+</head>
+<body>
 <main>
 
-	<form data-th-action="@{/login}" method="post">
-		<h1>Se connecter</h1>
-		<label for="login">Identifiant</label> <input type="text" id="login"
-			name="username"> <label for="pw">Mot de passe</label> <input
+<form action="/login" method="post">
+    <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+    <input type="password" name="password" placeholder="Mot de passe" required>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"> <!-- Ajout du jeton CSRF -->
+    <button type="submit">Se connecter</button>
+</form>
+
+<!--
+	<div class="flex bg-blue-100 justify-center w-1/4 m-auto mt-4 p-8 rounded-lg">
+		<form data-th-action="@{/login}" class="flex flex-col" method="post">
+			<h1 class="text-center mb-4">Se connecter</h1>
+			<label for="login">Identifiant</label> 
+			<input type="text" id="login"
+				name="username">
+			<label for="pw">Mot de passe</label> 
+			<input
 			type="password" id="pw" name="password">
-
-		<button type="submit">Se connecter</button>
-
-
-	</form>
+	
+			<button class="mt-4 w-fit self-center py-2 px-4 rounded-lg border-2  transition-all hover:text-white hover:bg-blue-400 border-solid border-blue-400" type="submit">Se connecter</button>
+	
+	
+		</form>
+	</div>-->
 </main>
+</body>
+</html>
