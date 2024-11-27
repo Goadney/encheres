@@ -3,6 +3,20 @@ package fr.eni.ecole.projet.encheres.bo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+
+
+
+@Entity
+@Table(name = "articles_a_vendre")
 public class ArticleAVendre implements Serializable {
 	
 	/**
@@ -10,23 +24,61 @@ public class ArticleAVendre implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "no_article")
+    private long id;
+	
+	@Column(name = "nom_article", nullable = false)
+	@NotBlank(message = "Le nom de l'article est obligatoire")
 	private String nom;
+	
+	@Column(name = "description",nullable = false)
+	@NotBlank(message = "La description est obligatoire")
 	private String description;
+	
+	@Column(name = "date_debut_encheres",nullable = false)
+	@NotBlank(message = "La date de début des enchères est obligatoire")
 	private LocalDate dateDebutEncheres;
+	
+	@Column(name = "date_fin_encheres",nullable = false)
+	@NotBlank(message = "La date de fin des enchères est obligatoire")
 	private LocalDate dateFinEncheres;
+	
+	@Column(name = "statut_enchere",nullable = false)
+	@NotBlank(message = "Le statut de l'enchère est obligatoire")
 	private int statut;
+	
+	@Column(name = "prix_initial",nullable = false)
+	@NotBlank(message = "Le prix initial est obligatoire")
 	private int prixInitial;
+	
+	@Column(name = "prix_vente")
 	private int prixVente;
+	
+	@ManyToOne
+	@JoinColumn(name = "no_categorie", referencedColumnName = "no_categorie")
+	private Categorie categorie;
+	
+	@ManyToOne
+	@JoinColumn(name = "no_adresse_retrait", referencedColumnName = "no_adresse")
+	private Adresse adresse;
+	
+	
+	
 	
 	
 	public ArticleAVendre() {
 
 	}
 
-
-	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente) {
+	public ArticleAVendre(long id, @NotBlank(message = "Le nom de l'article est obligatoire") String nom,
+			@NotBlank(message = "La description est obligatoire") String description,
+			@NotBlank(message = "La date de début des enchères est obligatoire") LocalDate dateDebutEncheres,
+			@NotBlank(message = "La date de fin des enchères est obligatoire") LocalDate dateFinEncheres,
+			@NotBlank(message = "Le statut de l'enchère est obligatoire") int statut,
+			@NotBlank(message = "Le prix initial est obligatoire") int prixInitial, int prixVente,
+			Categorie categorie) {
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
@@ -35,6 +87,7 @@ public class ArticleAVendre implements Serializable {
 		this.statut = statut;
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
+		this.categorie = categorie;
 	}
 
 
@@ -117,7 +170,6 @@ public class ArticleAVendre implements Serializable {
 		this.prixVente = prixVente;
 	}
 
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -137,8 +189,11 @@ public class ArticleAVendre implements Serializable {
 		builder.append(prixInitial);
 		builder.append(", prixVente=");
 		builder.append(prixVente);
+		builder.append(", categorie=");
+		builder.append(categorie);
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
+
 
 }
