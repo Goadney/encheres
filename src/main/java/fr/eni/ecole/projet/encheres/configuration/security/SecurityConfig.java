@@ -6,10 +6,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import fr.eni.ecole.projet.encheres.bll.UtilisateurService;
 import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 @Configuration
 @EnableWebSecurity
@@ -25,7 +26,11 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return new JpaUserDetailsService(utilisateurService);
     }
-
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
     @Bean

@@ -28,21 +28,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public Utilisateur findByPseudo(String pseudo) {
 	    Optional<Utilisateur> utilisateurOpt = dao.findByPseudo(pseudo);
-	    if (utilisateurOpt.isPresent()) {
-	        return utilisateurOpt.get();
-	    } else {
-	        throw new EntityNotFoundException("Utilisateur non trouvé pour le pseudo: " + pseudo);
-	    }		}
+		    if (utilisateurOpt.isPresent()) {
+		        return utilisateurOpt.get();
+		    } else {
+		        return null;
+		    }		
+	    }
 	
 	@Override
 	public Utilisateur findByEmail(String email) {
 
 		    Optional<Utilisateur> utilisateurOpt = dao.findByEmail(email);
-		    if (utilisateurOpt.isPresent()) {
-		        return utilisateurOpt.get();
-		    } else {
-		        throw new EntityNotFoundException("Utilisateur non trouvé pour email: " + email);
-		    }	
+			    if (utilisateurOpt.isPresent()) {
+			        return utilisateurOpt.get();
+			    } else {
+			        return null;
+			    }	
 	    }
 
 	@Override

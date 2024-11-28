@@ -1,37 +1,77 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	data-th-replace="~{layouts/layout :: layout-encheres( 
-						titrePage=~{:: title},
-						contenuPage=~{:: main},
-						ressourcesSupp=~{:: #ressources-css})}">
+      data-th-replace="~{layouts/layout :: layout-encheres(
+                        titrePage=~{:: title},
+                        contenuPage=~{:: main},
+                        ressourcesSupp=~{:: #ressources-css})}">
 
 <title>Inscription</title>
 
 <main>
-
-		    <h1>Inscription</h1>
-
-	<div class="flex bg-blue-100 justify-center w-1/4 m-auto mt-4 p-8 rounded-lg">
+    <h1>Inscription</h1>
     
-    <form th:action="@{/users/inscription}" method="post">
-        <div>
-            <label for="pseudo">Pseudo</label>
-            <input type="text" id="pseudo" name="pseudo" required>
-        </div>
-        
-        <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        
-        <div>
-            <label for="motDePasse">Mot de passe</label>
-            <input type="password" id="motDePasse" name="motDePasse" required>
-        </div>
-        
-        <button type="submit">S'inscrire</button>
-    </form>
-    
-    <p th:if="${param.error}" style="color:red">Une erreur s'est produite. Veuillez réessayer.</p>
-	</div>
+        <!-- Message d'erreur -->
+    <div th:if="${error}" class="bg-red-200 text-red-800 p-2 rounded">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div class="flex bg-blue-100 justify-center w-1/4 m-auto mt-4 p-8 rounded-lg">
+        <form th:action="@{/users/inscription}" method="post">
+            <!-- Pseudo -->
+            <div>
+                <label for="pseudo">Pseudo</label>
+                <input type="text" id="pseudo" name="pseudo" required>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <!-- Mot de passe -->
+            <div>
+                <label for="motDePasse">Mot de passe</label>
+                <input type="password" id="motDePasse" name="motDePasse" required>
+            </div>
+
+            <!-- Nom -->
+            <div>
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required>
+            </div>
+
+            <!-- Prénom -->
+            <div>
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required>
+            </div>
+
+            <!-- Adresse: Rue -->
+            <div>
+                <label for="rue">Rue</label>
+                <input type="text" id="rue" name="rue" required>
+            </div>
+
+            <!-- Adresse: Code postal -->
+            <div>
+                <label for="codePostal">Code postal</label>
+                <input type="text" id="codePostal" name="codePostal" required>
+            </div>
+
+            <!-- Adresse: Ville -->
+            <div>
+                <label for="ville">Ville</label>
+                <input type="text" id="ville" name="ville" required>
+            </div>
+
+            <!-- Bouton d'envoi -->
+            <div>
+                <button type="submit">S'inscrire</button>
+            </div>
+        </form>
+
+        <!-- Message d'erreur -->
+        <p th:if="${param.error}" style="color:red">Une erreur s'est produite. Veuillez réessayer.</p>
+    </div>
 </main>

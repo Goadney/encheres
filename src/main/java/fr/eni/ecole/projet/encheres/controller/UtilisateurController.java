@@ -2,7 +2,6 @@ package fr.eni.ecole.projet.encheres.controller;
 
 
 import java.util.Collections;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.ecole.projet.encheres.bo.Adresse;
@@ -32,12 +32,13 @@ import fr.eni.ecole.projet.encheres.bo.VendeurDTO;
 @RequestMapping("/users") 
 public class UtilisateurController {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     private final UtilisateurServiceImpl utilisateurService;
-    private PasswordEncoder passwordEncoder = null;
     @Autowired
     public UtilisateurController(UtilisateurServiceImpl utilisateurService) {
         this.utilisateurService = utilisateurService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     
@@ -48,36 +49,56 @@ public class UtilisateurController {
     
 
     @PostMapping("/inscription")
-    public ResponseEntity<?> inscrireUtilisateur(@ModelAttribute InscriptionDTO inscriptionDTO) {
+    public String inscrireUtilisateur(@ModelAttribute InscriptionDTO inscriptionDTO, Model model, RedirectAttributes redirectAttributes) {
         System.out.println("inscription");
-        // Vérifier si un utilisateur avec ce pseudo ou email existe déjà
-        if (utilisateurService.findByPseudo(inscriptionDTO.getPseudo()) != null) {
-            return ResponseEntity.badRequest().body("Le pseudo est déjà utilisé.");
-        }
 
+        if (utilisateurService.findByPseudo(inscriptionDTO.getPseudo()) != null) {
+            model.addAttribute("error", "Le pseudo est déjà utilisé.");
+            return "view-inscription"; 
+        }
 
         if (utilisateurService.findByEmail(inscriptionDTO.getEmail()) != null) {
-            return ResponseEntity.badRequest().body("L'email est déjà utilisé.");
+            model.addAttribute("error", "L'email est déjà utilisé.");
+            return "view-inscription"; 
         }
+        try {
+            // Créer un nouvel utilisateur
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(inscriptionDTO.getPseudo());
+            utilisateur.setEmail(inscriptionDTO.getEmail());
+            utilisateur.setMotDePasse(passwordEncoder.encode(inscriptionDTO.getMotDePasse()));
+            utilisateur.setNom(inscriptionDTO.getNom());
+            utilisateur.setPrenom(inscriptionDTO.getPrenom());
 
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setPseudo(inscriptionDTO.getPseudo());
-        utilisateur.setEmail(inscriptionDTO.getEmail());
-        utilisateur.setMotDePasse(passwordEncoder.encode(inscriptionDTO.getMotDePasse())); // Encodage du mot de passe
-        utilisateur.setNom(inscriptionDTO.getNom());
-        utilisateur.setPrenom(inscriptionDTO.getPrenom());
+            // Ajouter l'adresse
+            Adresse adresse = new Adresse();
+            adresse.setRue(inscriptionDTO.getRue());
+            adresse.setCodePostal(inscriptionDTO.getCodePostal());
+            adresse.setVille(inscriptionDTO.getVille());
+            utilisateur.setAdresse(adresse);
 
-        // Enregistrer l'utilisateur dans la base de données
-        Utilisateur utilisateurEnregistre = utilisateurService.save(utilisateur);
-        System.out.println(utilisateurEnregistre);
+            // Sauvegarder l'utilisateur
+            Utilisateur utilisateurEnregistre = utilisateurService.save(utilisateur);
+            System.out.println(utilisateurEnregistre);
 
-        // Exemple pour connecter automatiquement l'utilisateur après l'inscription
-        Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur, null, Collections.singleton(new SimpleGrantedAuthority("USER")));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Authentifier l'utilisateur
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                utilisateurEnregistre,
+                null,
+                Collections.singleton(new SimpleGrantedAuthority("USER"))
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Retourner une réponse avec l'utilisateur créé
-        return ResponseEntity.ok(utilisateurEnregistre);
+            // Rediriger vers la page de profil
+            redirectAttributes.addFlashAttribute("success", "Inscription réussie !");
+            return "redirect:/users/profil";
+        } catch (Exception e) {
+            // Gestion des erreurs imprévues
+            model.addAttribute("error", "Une erreur est survenue. Veuillez réessayer.");
+            return "view-inscription"; // Retourne le formulaire avec l'erreur
+        }
     }
+
 
     
     

@@ -2,15 +2,42 @@ package fr.eni.ecole.projet.encheres.bo;
 
 public class InscriptionDTO {
 
-    private String pseudo;
-    private String email;
-    private String motDePasse;
-    private String nom;
-    private String prenom;
+	  private String pseudo;
+	    private String nom;
+	    private String prenom;
+	    private String email;
+	    private String motDePasse;
+	    private String rue;
+	    private String codePostal;
+	    private String ville;
 
     // Getters et setters
 
-    public String getPseudo() {
+    public String getRue() {
+			return rue;
+		}
+
+		public void setRue(String rue) {
+			this.rue = rue;
+		}
+
+		public String getCodePostal() {
+			return codePostal;
+		}
+
+		public void setCodePostal(String codePostal) {
+			this.codePostal = codePostal;
+		}
+
+		public String getVille() {
+			return ville;
+		}
+
+		public void setVille(String ville) {
+			this.ville = ville;
+		}
+
+	public String getPseudo() {
         return pseudo;
     }
 
