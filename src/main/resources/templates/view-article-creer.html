@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-encheres( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
+						
+<title>Création d'un article</title>
+
+<main>
+
+	<h1>Création d'un article</h1>
+	
+	<div>
+	
+		<form th:action="@{/articles/creer}" method="post">
+		
+			<div>
+				<label for="nomArticle">Article :</label>
+				<input type="text" id="nomArticle" required data-th-field="*{nom}"/>
+			</div>
+			
+			<div>
+				<label for="categorieArticle">Catégorie :</label>
+				<input type="text" id="categorieArticle" required data-th-field="*{categorie}"/>
+			</div>
+			
+			<div>
+				<label for="descriptionArticle">Description de l'article :</label>
+				<input type="text" id="descriptionArticle" required data-th-field="*{description}"/>
+			</div>
+		
+		</form>
+	
+	</div>
+
+</main>

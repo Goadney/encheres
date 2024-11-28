@@ -12,11 +12,9 @@ import fr.eni.ecole.projet.encheres.dal.CategorieDAO;
 public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	
 	private ArticleAVendreDAO articleAVendreDAO;
-	private CategorieDAO categorieDAO;
 	
-	public ArticleAVendreServiceImpl(ArticleAVendreDAO articleAVendreDAO, CategorieDAO categorieDAO) {
+	public ArticleAVendreServiceImpl(ArticleAVendreDAO articleAVendreDAO) {
 		this.articleAVendreDAO = articleAVendreDAO;
-		this.categorieDAO = categorieDAO;
 	}
 	
 	@Override

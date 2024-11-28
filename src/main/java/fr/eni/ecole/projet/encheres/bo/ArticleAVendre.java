@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,15 +47,15 @@ public class ArticleAVendre implements Serializable {
 	@NotBlank(message = "La date de fin des enchères est obligatoire")
 	private LocalDate dateFinEncheres;
 	
-	@Column(name = "statut_enchere",nullable = false)
-	@NotBlank(message = "Le statut de l'enchère est obligatoire")
-	private int statut;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "statut_enchere", nullable = false)
+	private StatutEnchere statut;
 	
-	@Column(name = "prix_initial",nullable = false)
+	@Column(name = "prix_initial", nullable = false)
 	@NotBlank(message = "Le prix initial est obligatoire")
 	private int prixInitial;
 	
-	@Column(name = "prix_vente")
+	@Column(name = "prix_vente", nullable = true)
 	private int prixVente;
 	
 	@ManyToOne
@@ -77,7 +79,7 @@ public class ArticleAVendre implements Serializable {
 			@NotBlank(message = "La description est obligatoire") String description,
 			@NotBlank(message = "La date de début des enchères est obligatoire") LocalDate dateDebutEncheres,
 			@NotBlank(message = "La date de fin des enchères est obligatoire") LocalDate dateFinEncheres,
-			@NotBlank(message = "Le statut de l'enchère est obligatoire") int statut,
+			@NotBlank(message = "Le statut de l'enchère est obligatoire") StatutEnchere statut,
 			@NotBlank(message = "Le prix initial est obligatoire") int prixInitial, int prixVente, Categorie categorie,
 			Adresse adresse, Utilisateur utilisateur) {
 		super();
@@ -168,12 +170,12 @@ public class ArticleAVendre implements Serializable {
 	}
 
 
-	public int getStatut() {
+	public StatutEnchere getStatut() {
 		return statut;
 	}
 
 
-	public void setStatut(int statut) {
+	public void setStatut(StatutEnchere statut) {
 		this.statut = statut;
 	}
 
