@@ -18,6 +18,8 @@
 				
 			
 				<li data-th-if="${#authorization.expression('isAuthenticated()')}"><a href="/logout">Déconnexion</a></li>
+				<li data-th-if="${#authorization.expression('isAuthenticated()')}"><a href="/users/profil">Mon profil</a></li>
+				
 				<li data-th-if="${#authorization.expression('isAnonymous')}"><a href="/login">Connexion</a></li>
 				<li data-th-if="${#authorization.expression('isAnonymous')}"><a href="/users/inscription">Inscription</a></li>
 			

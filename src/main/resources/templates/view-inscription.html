@@ -10,68 +10,99 @@
 <main>
     <h1>Inscription</h1>
     
-        <!-- Message d'erreur -->
     <div th:if="${error}" class="bg-red-200 text-red-800 p-2 rounded">
         <p th:text="${error}"></p>
     </div>
 
+
     <div class="flex bg-blue-100 justify-center w-1/4 m-auto mt-4 p-8 rounded-lg">
-        <form th:action="@{/users/inscription}" method="post">
-            <!-- Pseudo -->
-            <div>
-                <label for="pseudo">Pseudo</label>
-                <input type="text" id="pseudo" name="pseudo" required>
-            </div>
+       <form th:object="${utilisateur}" th:action="@{/users/inscription}" method="post">
+		 <div>
+		    <label for="pseudo">Pseudo</label>
+		    <input type="text" id="pseudo" th:field="*{pseudo}" required>
+		    <div th:if="${#fields.hasErrors('pseudo')}" style="color: red;">
+		        <ul>
+		            <li th:each="err : ${#fields.errors('pseudo')}" th:text="${err}"></li>
+		        </ul>
+		    </div>
+		</div>
 
-            <!-- Email -->
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
 
-            <!-- Mot de passe -->
-            <div>
-                <label for="motDePasse">Mot de passe</label>
-                <input type="password" id="motDePasse" name="motDePasse" required>
-            </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required>
+                  <div th:if="${#fields.hasErrors('email')}" style="color: red;">
+            <ul>
+                <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
+            </ul>
+        </div>
+    </div>
 
-            <!-- Nom -->
-            <div>
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" name="nom" required>
-            </div>
+    <div>
+        <label for="motDePasse">Mot de passe</label>
+        <input type="password" id="motDePasse" th:field="*{motDePasse}" required>
+         <div th:if="${#fields.hasErrors('motDePasse')}" style="color: red;">
+            <ul>
+                <li th:each="err : ${#fields.errors('motDePasse')}" th:text="${err}"></li>
+            </ul>
+        </div>
+    </div>
 
-            <!-- Prénom -->
-            <div>
-                <label for="prenom">Prénom</label>
-                <input type="text" id="prenom" name="prenom" required>
-            </div>
+    <div>
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" th:field="*{nom}">
+                  <div th:if="${#fields.hasErrors('nom')}" style="color: red;">
+            <ul>
+                <li th:each="err : ${#fields.errors('nom')}" th:text="${err}"></li>
+            </ul>
+        </div>
+    </div>
 
-            <!-- Adresse: Rue -->
-            <div>
-                <label for="rue">Rue</label>
-                <input type="text" id="rue" name="rue" required>
-            </div>
+    <div>
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" th:field="*{prenom}">
+                  <div th:if="${#fields.hasErrors('prenom')}" style="color: red;">
+            <ul>
+                <li th:each="err : ${#fields.errors('prenom')}" th:text="${err}"></li>
+            </ul>
+        </div>
+    </div>
 
-            <!-- Adresse: Code postal -->
-            <div>
-                <label for="codePostal">Code postal</label>
-                <input type="text" id="codePostal" name="codePostal" required>
+   <div th:object="${adresse}">
+        <div>
+            <label for="rue">Rue</label>
+            <input type="text" id="rue" th:field="*{rue}" required>
+            <div th:if="${#fields.hasErrors('rue')}" style="color: red;">
+                <ul>
+                    <li th:each="err : ${#fields.errors('rue')}" th:text="${err}"></li>
+                </ul>
             </div>
-
-            <!-- Adresse: Ville -->
-            <div>
-                <label for="ville">Ville</label>
-                <input type="text" id="ville" name="ville" required>
+        </div>
+        <div>
+            <label for="codePostal">Code postal</label>
+            <input type="text" id="codePostal" th:field="*{codePostal}" required>
+            <div th:if="${#fields.hasErrors('codePostal')}" style="color: red;">
+                <ul>
+                    <li th:each="err : ${#fields.errors('codePostal')}" th:text="${err}"></li>
+                </ul>
             </div>
-
-            <!-- Bouton d'envoi -->
-            <div>
-                <button type="submit">S'inscrire</button>
+        </div>
+        <div>
+            <label for="ville">Ville</label>
+            <input type="text" id="ville" th:field="*{ville}" required>
+            <div th:if="${#fields.hasErrors('ville')}" style="color: red;">
+                <ul>
+                    <li th:each="err : ${#fields.errors('ville')}" th:text="${err}"></li>
+                </ul>
             </div>
-        </form>
+        </div>
+    </div>
 
-        <!-- Message d'erreur -->
-        <p th:if="${param.error}" style="color:red">Une erreur s'est produite. Veuillez réessayer.</p>
+    <div>
+        <button type="submit">S'inscrire</button>
+    </div>
+	</form>
+
+
     </div>
 </main>

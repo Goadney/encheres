@@ -13,6 +13,24 @@ public class Adresse {
     private String rue;
     private String codePostal;
     private String ville;
+    @Column(name = "adresse_eni")
+    private Boolean adresseEni;
+    
+    
+/*    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
+    private Long no_adresse;
+    @NotBlank
+    @Max(value=100, message="La rue doit faire 100 caractères ou moins")
+    private String rue;
+    @NotBlank
+    @Max( message="La rue doit faire 10 caractères ou moins", value = 10)
+    private String codePostal;
+    private String ville;
+    @NotBlank
+    @Max(value=50, message="La ville doit faire 50 caractères ou moins")
+    @Column(name = "adresse_eni")
+    private Boolean adresseEni;*/
 
     public Adresse() {
     }
@@ -64,4 +82,12 @@ public class Adresse {
                 ", ville='" + ville + '\'' +
                 '}';
     }
+
+	public Boolean getAddresse_eni() {
+		return adresseEni;
+	}
+
+	public void setAddresse_eni(Boolean addresse_eni) {
+		this.adresseEni = addresse_eni;
+	}
 }

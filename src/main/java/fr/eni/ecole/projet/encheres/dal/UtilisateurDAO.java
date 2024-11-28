@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
 
 @Repository
-public interface UtilisateurDAO extends JpaRepository<Utilisateur, Long>, JpaSpecificationExecutor<Utilisateur> {
+public interface UtilisateurDAO extends JpaRepository<Utilisateur, String>, JpaSpecificationExecutor<Utilisateur> {
 
 	Optional<Utilisateur> findByPseudo(@Param("pseudo") String pseudo);
 

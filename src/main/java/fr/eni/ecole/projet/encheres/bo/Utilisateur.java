@@ -1,6 +1,16 @@
 package fr.eni.ecole.projet.encheres.bo;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "utilisateurs")
@@ -8,15 +18,50 @@ public class Utilisateur {
 
     @Id
     @Column(name = "pseudo", nullable = false, unique = true)
+    @NotNull(message = "Le pseudo ne peut pas être vide")
+    @Size(max = 30, message = "Le pseudo doit avoir moins de 30 caractères")
     private String pseudo;
+
+    @NotBlank
     private String nom;
+
+    @NotBlank
     private String prenom;
+
+    @Email(message = "Email invalide")
+    @NotNull(message = "L'email ne peut pas être vide")
     private String email;
+    
     private String telephone;
+
+    @Column(name = "mot_de_passe", nullable = false)
+    private String motDePasse;
+
+    private int credit;
+    private boolean administrateur;
+    
+   /* @Id
+    @Column(name = "pseudo", nullable = false, unique = true)
+    @NotBlank
+    @Max(value=30, message="Le pseudo doit faire 30 caractères ou moins")
+    private String pseudo;
+    @NotBlank
+    @Max(value=40, message="Le pseudo doit faire 40 caractères ou moins")
+    private String nom;
+    @NotBlank
+    @Max(value=50, message="Le pseudo doit faire 50 caractères ou moins")
+    private String prenom;
+    @NotBlank
+    @Email
+    @Max(value=100, message="Le pseudo doit faire 100 caractères ou moins")
+    private String email;
+    @Max(value=15, message="Le pseudo doit faire 15 caractères ou moins")
+    private String telephone;
+    @Max(value=68, message="Le pseudo doit faire 68 caractères ou moins")
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
     private int credit;
-    private boolean administrateur;
+    private boolean administrateur;*/
 
     //  one to one  avec addresse
     @OneToOne(cascade = CascadeType.ALL) // psi  on suppr l'user ca suppr l'adresse

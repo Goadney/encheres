@@ -1,5 +1,8 @@
 package fr.eni.ecole.projet.encheres.configuration.security;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -29,8 +33,17 @@ public class SecurityConfig {
     
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    	// pour que les 
+        // Définit un encodeur par défaut (bcrypt ici)
+        String idForEncode = "bcrypt";
+        // Liste des encodeurs disponibles
+        Map<String, PasswordEncoder> encoders = new HashMap<>();
+        encoders.put("bcrypt", new BCryptPasswordEncoder());
+
+        // Crée un delegating password encoder
+        return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
+
 
 
     @Bean
@@ -43,6 +56,8 @@ public class SecurityConfig {
             	.requestMatchers(HttpMethod.GET, "/encheres/details").hasAnyRole("USER", "ADMIN")
             	.requestMatchers(HttpMethod.POST, "/encheres/details").hasAnyRole("USER", "ADMIN")
             	.requestMatchers("/utilisateurs/supprimer").hasAnyRole("ADMIN")
+            	.requestMatchers("/users/profil").hasAnyRole("USER")
+
             	.requestMatchers("/utilisateurs/desactiver").hasAnyRole("ADMIN") 
 				.anyRequest().permitAll()
             )         
