@@ -2,20 +2,94 @@
 <!-- Mise en place du layout -->
 <!-- Accueil comme titre de page -->
 <!-- la balise main définit par la classe de CSS 'center-main' comme paramètre contenuPage -->
-<html xmlns:th="http://www.thymeleaf.org"
-	data-th-replace="~{layouts/layout :: layout-encheres( 
-					titrePage=~{:: title},
-					contenuPage=~{:: main},
-					ressourcesSupp=~{})}">
+<html 	xmlns:th="http://www.thymeleaf.org"
+		data-th-replace="~{layouts/layout :: layout-encheres( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
 
 <!-- Accueil comme titre de page -->
-<title data-th-text="#{index.title}"></title>
+<head>
+<title>Accueil</title>
+</head>
 
 <body>
-	<main class="center-main">
-		<section class="center-section">
-			<h1 style="text-align: center;" data-th-text="#{index.h1}"></h1>
-		</section>
-	</main>
+<main>
+	
+	<form action="/encheres" method="POST">
+			<h1 style="text-align: left;" data-th-text="#{index.h1}">Liste des enchères</h1>
+			
+		<div>
+            <label for="recherche">Filtres :</label>
+            <input type="text" id="recherche" name="recherche" placeholder="Le nom de l'article contient" required>
+        </div>
+        <div>
+        	<label for="categorie">Catégorie :</label>
+            <select id="categorie" name="categorie">
+            	<option value="" selected>Toutes</option>
+       		 	<option th:each="categorie : ${categories}" 
+                		th:value="${categorie.id}" 
+                		th:text="${categorie.libelle}">
+                </option>
+            </select>
+        </div>
+           
+       <div class="form-actions">  
+       	 	<button type="submit">Rechercher</button>
+       		<button type="reset">Annuler</button>
+    	</div>
+	
+		<div>		
+				<input type="checkbox" name="achats">
+				<label for="achats">Achats</label>
+				<select id="achats" name="achats">
+               	<option value="ouvertes">Enchères ouvertes</option>
+                <option value="achats-en-cours">Mes enchères en cours</option>
+                <option value="remportees">Mes enchères remportées</option>
+                </select>
+		</div>
+	
+		<div>		
+				<input type="checkbox" name="ventes">
+				<label for="ventes">Mes ventes</label>
+				<select id="ventes" name="ventes">
+               	<option value="ventes-en-cours">Mes ventes en cours</option>
+                <option value="en-cours">Mes ventes non débutées</option>
+                <option value="remportees">Mes ventes terminées</option>
+                </select>
+		</div>
+		
+<!-- 		<ul> 
+			<li data-th-each="enchere : ${encheres}">
+	
+			 <p>Nom : <span data-th-text="${articleAVendre.nom}"></span></p>
+   			 <p>Prix : <span data-th-text="${articleAVendre.prixInitial} + 'points'"></span></p>
+    		 <p>Fin de l'enchère : <span data-th-text="${articleAVendre.dateFinEncheres}"></span></p>
+    	 	<p>Vendeur : <span data-th-text="${articleAVendre.utilisateur.pseudo}"></span></p>
+    	 	</li>
+    	 </ul>-->
+    	 <table>
+    	 	<thead>
+    	 		<!-- 	<img src="" alt="photo article">  -->
+    	 		<tr>
+    	 			<th>Nom :</th>
+    	 			<th>Prix :</th>
+    	 			<th>Fin de l'enchère :</th>
+    	 			<th>Vendeur :</th>
+    	 		</tr>
+    	 	</thead>
+    	 	<tbody>
+    	 		<tr data-th-each="articleAVendre : ${articleAVendre}">
+    	 			<td data-th-text="${articleAVendre.nom}"></td>
+    	 			<td data-th-text="${articleAVendre.prixInitial} + 'points'"></td>
+    	 			<td data-th-text="${articleAVendre.dateFinEncheres}"></td>
+    	 			<td data-th-text="${articleAVendre.utilisateur.pseudo}"></td>
+    	 	</tbody>
+    	 
+    	 </table>
+	</form>	
+</main>
 </body>
 </html>
+
+    
