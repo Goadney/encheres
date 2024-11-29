@@ -10,8 +10,6 @@ import fr.eni.ecole.projet.encheres.bo.Enchere;
 @Service
 public interface EnchereService {
 	
-	List<Enchere> afficherEncheresActives();
-	
 	List<Enchere> afficherEncheresParUtilisateur(String pseudo);
 	
 	void encherir(Enchere enchere, long id);

@@ -53,6 +53,7 @@ public class SecurityConfig {
         http           
 		        .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/css/*", "/images/*").permitAll()
+                .requestMatchers("/encheres").permitAll()
                 .requestMatchers("/utilisateurs/admin/delete/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/accueil").hasAnyRole("USER", "ADMIN")
             	.requestMatchers(HttpMethod.GET, "/encheres/details").hasAnyRole("USER", "ADMIN")

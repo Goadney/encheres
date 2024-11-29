@@ -10,7 +10,7 @@ public class EnchereId implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "montant-enchere")
+	@Column(name = "montant_enchere")
 	private int montant;
 	
 	@Column(name = "no_article")

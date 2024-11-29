@@ -47,4 +47,9 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
         }
     }
 
+	@Override
+	public List<ArticleAVendre> afficherEncheresActives() {
+		return articleAVendreDAO.findAll();
+	}
+
 }

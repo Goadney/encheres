@@ -47,9 +47,8 @@ public class ArticleAVendre implements Serializable {
 	@NotBlank(message = "La date de fin des enchères est obligatoire")
 	private LocalDate dateFinEncheres;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "statut_enchere", nullable = false)
-	private StatutEnchere statut;
+	private int statut;
 	
 	@Column(name = "prix_initial", nullable = false)
 	@NotBlank(message = "Le prix initial est obligatoire")
@@ -79,7 +78,7 @@ public class ArticleAVendre implements Serializable {
 			@NotBlank(message = "La description est obligatoire") String description,
 			@NotBlank(message = "La date de début des enchères est obligatoire") LocalDate dateDebutEncheres,
 			@NotBlank(message = "La date de fin des enchères est obligatoire") LocalDate dateFinEncheres,
-			@NotBlank(message = "Le statut de l'enchère est obligatoire") StatutEnchere statut,
+			@NotBlank(message = "Le statut de l'enchère est obligatoire") int statut,
 			@NotBlank(message = "Le prix initial est obligatoire") int prixInitial, int prixVente, Categorie categorie,
 			Adresse adresse, Utilisateur utilisateur) {
 		super();
@@ -170,12 +169,12 @@ public class ArticleAVendre implements Serializable {
 	}
 
 
-	public StatutEnchere getStatut() {
+	public int getStatut() {
 		return statut;
 	}
 
 
-	public void setStatut(StatutEnchere statut) {
+	public void setStatut(int statut) {
 		this.statut = statut;
 	}
 

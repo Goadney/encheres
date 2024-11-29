@@ -79,11 +79,11 @@
     	 		</tr>
     	 	</thead>
     	 	<tbody>
-    	 		<tr data-th-each="articleAVendre : ${articleAVendre}">
-    	 			<td data-th-text="${articleAVendre.nom}"></td>
-    	 			<td data-th-text="${articleAVendre.prixInitial} + 'points'"></td>
-    	 			<td data-th-text="${articleAVendre.dateFinEncheres}"></td>
-    	 			<td data-th-text="${articleAVendre.utilisateur.pseudo}"></td>
+    	 		<tr data-th-each="enchere : ${encheres}">
+    	 			<td data-th-text="${enchere.nom}"></td>
+    	 			<td data-th-text="${enchere.prixInitial} + 'points'"></td>
+    	 			<td data-th-text="${enchere.dateFinEncheres}"></td>
+    	 			<td data-th-text="${enchere.utilisateur.pseudo}"></td>
     	 	</tbody>
     	 
     	 </table>
