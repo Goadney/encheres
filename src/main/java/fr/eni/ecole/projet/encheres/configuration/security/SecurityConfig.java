@@ -31,6 +31,8 @@ public class SecurityConfig {
         return new JpaUserDetailsService(utilisateurService);
     }
     
+    
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
     	// pour que les 
@@ -48,8 +50,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
+        http           
+		        .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/css/*", "/images/*").permitAll()
                 .requestMatchers("/utilisateurs/admin/delete/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/accueil").hasAnyRole("USER", "ADMIN")
@@ -60,7 +62,7 @@ public class SecurityConfig {
 
             	.requestMatchers("/utilisateurs/desactiver").hasAnyRole("ADMIN") 
 				.anyRequest().permitAll()
-            )         
+            )
             .formLogin(form -> form
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/", true)

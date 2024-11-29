@@ -6,6 +6,7 @@ import fr.eni.ecole.projet.encheres.bo.Adresse;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
 import fr.eni.ecole.projet.encheres.dal.AdresseDAO;
 import fr.eni.ecole.projet.encheres.dal.UtilisateurDAO;
+import fr.eni.ecole.projet.encheres.exceptions.CantFindUser;
 import fr.eni.ecole.projet.encheres.exceptions.DuplicateUserException;
 import fr.eni.ecole.projet.encheres.exceptions.InvalidPasswordException;
 import jakarta.transaction.Transactional;
@@ -39,10 +40,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 	
 	@Override
-	public void update(Utilisateur user) {
-		// TODO Auto-generated method stub
-		
+	public void update(Utilisateur utilisateur) {
+	    // Validation et mise à jour de l'utilisateur
+		daoUser.save(utilisateur);
 	}
+
 	
 	
 	@Override
@@ -51,7 +53,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		    if (utilisateurOpt.isPresent()) {
 		        return utilisateurOpt.get();
 		    } else {
-		        return null;
+		        throw new CantFindUser("Cet utilisateur n'existe pas");	
 		    }		
 	    }
 	
@@ -70,10 +72,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(String pseudo) {
+	    java.util.Optional<Utilisateur> utilisateurOpt = daoUser.findByPseudo(pseudo);
+	    if (utilisateurOpt.isPresent()) {
+	    	daoUser.delete(utilisateurOpt.get());
+	        return;
+	    } else {
+	        throw new CantFindUser("Cet utilisateur n'existe pas");	
+	    }		
+    }
 
 
 

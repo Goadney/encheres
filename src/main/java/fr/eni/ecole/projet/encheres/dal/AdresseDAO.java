@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import fr.eni.ecole.projet.encheres.bo.Adresse;
 
 @Repository
-public interface AdresseDAO extends JpaRepository<Adresse, Integer>, JpaSpecificationExecutor<Adresse> {
+public interface AdresseDAO extends JpaRepository<Adresse, Long>, JpaSpecificationExecutor<Adresse> {
 
 
 }

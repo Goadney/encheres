@@ -70,49 +70,103 @@ public class UtilisateurController {
 
 
 
-    
-    
-    @GetMapping("/profil")
-    public String afficherMonProfil(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
-        String pseudo = authentication.getName(); 
-        System.out.println(pseudo);
-        
-        Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
-        if (utilisateur != null) {
-        	System.out.println("utilisateur pas null on ajoute a la vue");
-            model.addAttribute("utilisateur", utilisateur.get());
-            return "profil"; 
-        } else {
-            return "redirect:/login"; 
-        }
-    }
 
 
-    @GetMapping("/profil/{pseudo}")
-    public String afficherProfilVendeur(@PathVariable("pseudo") String pseudo, Model model) {
+    @GetMapping({"/profil", "/profil/{pseudo}"})
+    public String afficherProfilVendeur(@PathVariable(value = "pseudo", required = false) String pseudo, Model model) {
 
-    	try {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Boolean me = false;
-            Utilisateur vendeur = utilisateurService.findByPseudo(pseudo);
-            if(vendeur.getPseudo() == authentication.getName()) {
-            	me= true;
+            Utilisateur utilisateur;
+
+            if (pseudo == null) {
+                String username = authentication.getName();
+                utilisateur = utilisateurService.findByPseudo(username);
+            } else {
+                utilisateur = utilisateurService.findByPseudo(pseudo);
             }
-            model.addAttribute("utilisateur", vendeur.get());
+
+            boolean me = utilisateur.getPseudo().equals(authentication.getName());
+            model.addAttribute("utilisateur", utilisateur);
             model.addAttribute("me", me);
 
-            return "profil-vendeur"; 
-    	}catch(Exception e) {
+            return "profil";
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return "view-inscription";
-    	}
+            return "profil";
+        }
     }
+    
+    @GetMapping("/profil/modifier")
+    public String modifierMonProfil(Model model) {
+    	try {
+    		
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null) {
+        	return "redirect:/";
+        }
+        
+        String pseudo = authentication.getName();
+
+        Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
+        model.addAttribute("utilisateur", utilisateur);
+        return "profil-modify";
+    	}
+		catch(Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/";
+		}
+    }
+    
+    @PostMapping("/profil/modifier")
+    public String modifierMonProfilForm(
+    		@ModelAttribute Utilisateur utilisateurModifie, Model model) {
+        
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String pseudo = authentication.getName();
+
+            Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
+            utilisateur.setPrenom(utilisateurModifie.getPrenom());
+            utilisateur.setTelephone(utilisateurModifie.getTelephone());
+            utilisateur.setNom(utilisateurModifie.getNom());
+            utilisateur.setEmail(utilisateurModifie.getEmail());
+            utilisateur.getAdresse().setRue(utilisateurModifie.getAdresse().getRue());
+            utilisateur.getAdresse().setCodePostal(utilisateurModifie.getAdresse().getCodePostal());
+            utilisateur.getAdresse().setVille(utilisateurModifie.getAdresse().getVille());
+
+            utilisateurService.update(utilisateur);
+            boolean me = utilisateur.getPseudo().equals(authentication.getName());
+            model.addAttribute("utilisateur", utilisateur);
+            model.addAttribute("me", me);
+            return "/profil";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "/profil/modifier";
+        }
+    }
+    
+    @GetMapping("/profil/supprimer")
+    public String supprimerCompte(Model model) {
+        
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String pseudo = authentication.getName();
+
+            Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
+
+            utilisateurService.update(utilisateur);
+            if(utilisateur.getPseudo().equals(authentication.getName())) { 
+            	utilisateurService.delete(pseudo);
+            };
+            return "redirect:/";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "/profil/modifier";
+        }
+    }
+
+
 
   
 }

@@ -8,7 +8,8 @@ public class Adresse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private Long no_adresse;
+    @Column(name = "no_adresse")
+    private Long NoAdresse;
 
     private String rue;
     private String codePostal;
@@ -42,11 +43,11 @@ public class Adresse {
     }
 
     public Long getId() {
-        return no_adresse;
+        return NoAdresse;
     }
 
     public void setId(Long id) {
-        this.no_adresse = id;
+        this.NoAdresse = id;
     }
 
     public String getRue() {
@@ -76,7 +77,7 @@ public class Adresse {
     @Override
     public String toString() {
         return "Adresse{" +
-                "id=" + no_adresse +
+                "id=" + NoAdresse +
                 ", rue='" + rue + '\'' +
                 ", codePostal='" + codePostal + '\'' +
                 ", ville='" + ville + '\'' +

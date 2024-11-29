@@ -16,6 +16,6 @@ public interface UtilisateurService {
 	
 	void update(Utilisateur user);
 	
-	void delete(Long id);
+	void delete(String pseudo);
  
 }
