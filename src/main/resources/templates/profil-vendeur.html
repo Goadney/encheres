@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      data-th-replace="~{layouts/layout :: layout-encheres(
+                          titrePage=~{::title}, 
+                          contenuPage=~{::main}, 
+                          ressourcesSupp=~{::#ressources-css})}">
+    <head>
+        <title th:text="${utilisateur.pseudo}">Test</title>
+    </head>
+
+    <body>
+        <main>
+        	<div class="w-2/5 h-4/5 bg-blue-200 flex flex-col justify-center rounded-lg mx-auto my-4 p-8">
+        		<h2  class="text-center text-lg" data-th-text="${utilisateur.pseudo}"></h2>
+        		
+        		<div class="flex gap-4"> 	
+        		<p>Prenom :</p>
+        		<p data-th-text="${utilisateur.prenom}" ></p>
+        		</div>
+        		<div class="flex gap-4"> 	
+        		<p>Nom : </p>
+        		<p data-th-text="${utilisateur.nom}" ></p>
+        		</div>
+        		<div Email="flex gap-4"> 	
+        		<p>Email :</p>
+        		<p data-th-text="${utilisateur.email}" ></p>
+        		</div>
+        		<div class="flex gap-4"> 	
+        		<p>Téléphone :</p>
+        		<p data-th-text="${utilisateur.telephone}" ></p>
+        		</div>
+        		
+        		<a  class="px-4 py-2 rounded-lg border-2 border-blue-800 border-solid hover:bg-blue-800 hover:text-white" data-th-if="${me}" href="/users/profil">Modifier</a>
+        		<a class="px-4 py-2 rounded-lg border-2 border-blue-800 border-solid hover:bg-blue-800 hover:text-white" data-th-if="${!me}" href="/">Retour</a>
+        		
+        		
+        	</div>
+        </main>
+
+    </body>
+</html>

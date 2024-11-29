@@ -2,18 +2,17 @@ package fr.eni.ecole.projet.encheres.controller;
 
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import fr.eni.ecole.projet.encheres.bll.ArticleAVendreService;
 import fr.eni.ecole.projet.encheres.bll.CategorieService;
 import fr.eni.ecole.projet.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.projet.encheres.bo.Categorie;
 
-@RestController
+@Controller
 @RequestMapping("/articles")
 public class ArticleAVendreController {
 	

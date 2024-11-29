@@ -1,13 +1,9 @@
 package fr.eni.ecole.projet.encheres.controller;
 
 
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,16 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.ecole.projet.encheres.bo.Adresse;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
-import fr.eni.ecole.projet.encheres.bo.VendeurDTO;
 import jakarta.validation.Valid;
 
 @Controller
@@ -57,11 +48,10 @@ public class UtilisateurController {
             BindingResult bindingResultAdresse, 
             Model model) {
 
-				if (bindingResultAdresse.hasErrors() || bindingResultUser.hasErrors()) {
-				return "view-inscription";  
-				}
-        
-
+			if (bindingResultAdresse.hasErrors() || bindingResultUser.hasErrors()) {
+			return "view-inscription";  
+			}
+       
 
         try {
             utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
@@ -105,20 +95,23 @@ public class UtilisateurController {
 
 
     @GetMapping("/profil/{pseudo}")
-    public ResponseEntity<?> afficherProfilVendeur(@PathVariable String pseudo) {
-        Utilisateur vendeur = utilisateurService.findByPseudo(pseudo);
-        if (vendeur != null) {
-            Utilisateur utilisateur = vendeur.get();
-            return ResponseEntity.ok(new VendeurDTO(
-                    utilisateur.getPseudo(),
-                    utilisateur.getNom(),
-                    utilisateur.getPrenom(),
-                    utilisateur.getEmail(),
-                    utilisateur.getTelephone()
-            ));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public String afficherProfilVendeur(@PathVariable("pseudo") String pseudo, Model model) {
+
+    	try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Boolean me = false;
+            Utilisateur vendeur = utilisateurService.findByPseudo(pseudo);
+            if(vendeur.getPseudo() == authentication.getName()) {
+            	me= true;
+            }
+            model.addAttribute("utilisateur", vendeur.get());
+            model.addAttribute("me", me);
+
+            return "profil-vendeur"; 
+    	}catch(Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "view-inscription";
+    	}
     }
 
   
