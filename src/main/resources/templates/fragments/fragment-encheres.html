@@ -1,0 +1,30 @@
+<header xmlns:th="http://www.thymeleaf.org"
+	data-th-fragment="frag-entete">
+	<section class="flex bg-blue-100 justify-between">
+		<div class="flex items-center justify-start p-4 gap-4">
+			<img class="w-1/5" data-th-src="@{/images/logo_eni.jpg}">
+	
+			<h1 data-th-text="#{nom-application}" >	
+			</h1>
+		</div>
+		<div class="flex gap-2 items-center">
+			<a href="/?language=fr"  class="w-1/5"><img alt="Français" class
+				src="/images/French.webp"></a> 
+				<a href="/?language=en"  class="w-1/5"><img
+				alt="English" src="/images/English.webp"></a>
+	<nav>
+		<ul class="flex gap-2">
+			<li ><a href="/">Accueil</a></li>
+				
+			
+				<li data-th-if="${#authorization.expression('isAuthenticated()')}"><a href="/logout">Déconnexion</a></li>
+				<li data-th-if="${#authorization.expression('isAuthenticated()')}"><a href="/users/profil">Mon profil</a></li>
+				
+				<li data-th-if="${#authorization.expression('isAnonymous')}"><a href="/login">Connexion</a></li>
+				<li data-th-if="${#authorization.expression('isAnonymous')}"><a href="/users/inscription">Inscription</a></li>
+			
+		</ul>
+	</nav>
+		</div>
+	</section>
+</header>

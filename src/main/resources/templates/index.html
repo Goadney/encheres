@@ -7,7 +7,7 @@
 						titrePage=~{:: title},
 						contenuPage=~{:: main},
 						ressourcesSupp=~{:: #ressources-css})}">
-
+						
 <!-- Accueil comme titre de page -->
 <head>
 <title>Accueil</title>
@@ -81,7 +81,7 @@
     	 	<tbody>
     	 		<tr data-th-each="enchere : ${encheres}">
     	 			<td data-th-text="${enchere.nom}"></td>
-    	 			<td data-th-text="${enchere.prixInitial} + 'points'"></td>
+    	 			<td data-th-text="${enchere.prixInitial} + 'point(s)'"></td>
     	 			<td data-th-text="${enchere.dateFinEncheres}"></td>
     	 			<td data-th-text="${enchere.utilisateur.pseudo}"></td>
     	 	</tbody>

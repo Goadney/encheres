@@ -1,6 +1,7 @@
 package fr.eni.ecole.projet.encheres.bo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -52,6 +53,20 @@ public class EnchereId implements Serializable {
 	public void setIdUtilisateur(String idUtilisateur) {
 		this.idUtilisateur = idUtilisateur;
 	}
+	
+	  @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        EnchereId enchereId = (EnchereId) o;
+	        return Objects.equals(getIdUtilisateur(), enchereId.getIdUtilisateur()) &&
+	               Objects.equals(getNoArticle(), enchereId.getNoArticle());
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(getIdUtilisateur(), getNoArticle());
+	    }
 	
 
 }

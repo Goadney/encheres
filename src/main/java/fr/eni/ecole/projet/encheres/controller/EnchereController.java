@@ -7,13 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.ecole.projet.encheres.bll.ArticleAVendreService;
 import fr.eni.ecole.projet.encheres.bll.CategorieService;
 import fr.eni.ecole.projet.encheres.bll.EnchereService;
+import fr.eni.ecole.projet.encheres.bll.UtilisateurService;
 import fr.eni.ecole.projet.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.projet.encheres.bo.Categorie;
+import fr.eni.ecole.projet.encheres.bo.Enchere;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
 
 @Controller
@@ -24,6 +27,7 @@ public class EnchereController {
 	private EnchereService enchereService;
 	private CategorieService categorieService;
 	private ArticleAVendreService articleAVendreService;
+	private UtilisateurService utilisateurService;
 
 	public EnchereController(EnchereService enchereService, CategorieService categorieService, ArticleAVendreService articleAVendreService) {
 		super();
@@ -44,17 +48,8 @@ public class EnchereController {
 		return "index";
 	}
 
-	@GetMapping("/achats")
-	public String afficherEncheresParUtilisateur(Model model, Authentication authentication) {
-		Utilisateur utilisateur = (Utilisateur) authentication.getPrincipal();
-		String pseudo = utilisateur.getPseudo();
 
-		model.addAttribute("encheres", enchereService.afficherEncheresParUtilisateur(pseudo));
-
-		return "view-encheres-achats";
-	}
-
-	/*
+	/* TO DO
 	 * @PostMapping("/encherir") public String encherir(@RequestParam(name =
 	 * "no_article", required = true) long id,
 	 * 
@@ -73,4 +68,4 @@ public class EnchereController {
 	 * }
 	 */
 
-}
+} 

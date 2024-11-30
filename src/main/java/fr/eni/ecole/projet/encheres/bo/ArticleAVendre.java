@@ -55,7 +55,7 @@ public class ArticleAVendre implements Serializable {
 	private int prixInitial;
 	
 	@Column(name = "prix_vente", nullable = true)
-	private int prixVente;
+	private Integer prixVente;
 	
 	@ManyToOne
 	@JoinColumn(name = "no_categorie", referencedColumnName = "no_categorie")

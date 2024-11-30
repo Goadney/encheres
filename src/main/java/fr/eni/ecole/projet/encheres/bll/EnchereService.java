@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 
 import fr.eni.ecole.projet.encheres.bo.Categorie;
 import fr.eni.ecole.projet.encheres.bo.Enchere;
+import fr.eni.ecole.projet.encheres.bo.Utilisateur;
 
 @Service
 public interface EnchereService {
-	
-	List<Enchere> afficherEncheresParUtilisateur(String pseudo);
 	
 	void encherir(Enchere enchere, long id);
 
@@ -18,7 +17,13 @@ public interface EnchereService {
 
 	void encherir(Enchere enchere);
 	
-	List<Categorie> afficherCategories(); 
+	List<Categorie> afficherCategories();
+
+	List<Enchere> afficherEncheresActives();
+
+	List<Enchere> afficherAchats(String pseudo);
+
+	List<Enchere> getAchatsUtilisateur(String recherche, Long categorieId, List<Enchere> achats, Utilisateur utilisateur); 
 	
 }
 
