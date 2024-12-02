@@ -27,12 +27,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	public Utilisateur save(Utilisateur user, Adresse ad) {
-		if(user.getMotDePasse() == null) {
+		if(user.getMotDePasse() == null || user.getMotDePasse().length() > 68) {
 	        throw new InvalidPasswordException("Mot de passe incorrect");	
 		}
 		if(daoUser.findByPseudo(user.getPseudo()).isPresent() || daoUser.findByEmail(user.getEmail()).isPresent())  {
 	        throw new DuplicateUserException("Ce mail ou ce pseudo est déjà pris !! On arrête les test anne-lise !!");	
-	        }
+	    }
+
 		daoAd.save(ad);
 		user.setAdresse(ad);
 		daoUser.save(user);

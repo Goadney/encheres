@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/encheres/**").hasAnyRole("USER", "ADMIN") 
                 .requestMatchers("/utilisateurs/admin/delete/*").hasRole("ADMIN") 
                 .requestMatchers("/users/profil").hasRole("USER") 
-                .anyRequest().authenticated() 
+                .anyRequest().permitAll() 
                 )
             .formLogin(form -> form
                 .loginPage("/login").permitAll() 

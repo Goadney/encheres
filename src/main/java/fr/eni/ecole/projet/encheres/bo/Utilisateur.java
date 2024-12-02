@@ -18,22 +18,28 @@ import jakarta.validation.constraints.Size;
 @Table(name = "utilisateurs")
 public class Utilisateur implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "pseudo", nullable = false, unique = true)
-    @NotNull(message = "Le pseudo ne peut pas être vide")
-    @Size(max = 30, message = "Le pseudo doit avoir moins de 30 caractères")
+    @NotNull(message = "{pseudo.notnull}")
+    @Size(max = 30, message = "{pseudo.size}")
     private String pseudo;
 
-    @NotBlank
+    @NotBlank(message = "{nom.notblank}")
+    @Size(max = 40, message = "{nom.size}")
     private String nom;
 
-    @NotBlank
+    @NotBlank(message = "{prenom.notblank}")
+    @Size(max = 50, message = "{prenom.size}")
     private String prenom;
 
-    @Email(message = "Email invalide")
-    @NotNull(message = "L'email ne peut pas être vide")
+    @Email(message = "{email.invalid}")
+    @NotNull(message = "{email.notnull}")
+    @Size(max = 100, message = "{email.size}")
     private String email;
-    
+
+    @Size(max = 15, message = "{telephone.size}")
     private String telephone;
 
     @Column(name = "mot_de_passe", nullable = false)

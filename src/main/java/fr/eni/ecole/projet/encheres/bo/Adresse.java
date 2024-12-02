@@ -1,6 +1,8 @@
 package fr.eni.ecole.projet.encheres.bo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "adresses")
@@ -10,10 +12,19 @@ public class Adresse {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
     @Column(name = "no_adresse")
     private Long NoAdresse;
-
+    
+    @NotNull(message = "{rue.notnull}")
+    @Size(max = 100, message = "{rue.size}")
     private String rue;
+
+    @NotNull(message = "{codePostal.notnull}")
+    @Size(max = 10, message = "{codePostal.size}")
     private String codePostal;
+
+    @NotNull(message = "{ville.notnull}")
+    @Size(max = 50, message = "{ville.size}")
     private String ville;
+    
     @Column(name = "adresse_eni")
     private Boolean adresseEni;
     
