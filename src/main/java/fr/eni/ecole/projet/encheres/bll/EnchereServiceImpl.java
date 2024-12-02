@@ -2,14 +2,10 @@ package fr.eni.ecole.projet.encheres.bll;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import fr.eni.ecole.projet.encheres.bo.ArticleAVendre;
-import fr.eni.ecole.projet.encheres.bo.Categorie;
 import fr.eni.ecole.projet.encheres.bo.Enchere;
 import fr.eni.ecole.projet.encheres.bo.Utilisateur;
-import fr.eni.ecole.projet.encheres.dal.ArticleAVendreDAO;
 import fr.eni.ecole.projet.encheres.dal.CategorieDAO;
 import fr.eni.ecole.projet.encheres.dal.EnchereDAO;
 
@@ -40,11 +36,6 @@ public class EnchereServiceImpl implements EnchereService {
 		return enchereDAO.findByUtilisateurPseudo(pseudo);
 	}
 
-	@Override
-	public void encherir(Enchere enchere) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void encherir(Enchere enchere, long id) {
@@ -52,11 +43,12 @@ public class EnchereServiceImpl implements EnchereService {
 
 	}
 
+
 	@Override
-	public List<Categorie> afficherCategories() {
-		List<Categorie> categories = categorieDAO.findAll();
-	    System.out.println("Catégories récupérées : " + categories);
-	    return categories;
+	public List<Enchere> getAchatsUtilisateur(String recherche, Long categorieId, List<Enchere> achats,
+			Utilisateur utilisateur) {
+		
+		return null;
 	}
 
 	

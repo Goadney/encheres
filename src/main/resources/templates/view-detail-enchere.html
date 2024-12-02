@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-encheres( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
+<head>
+    <title>Enchères</title>
+</head>
+<body>
+	<main>
+    <h1 class="page-titre">Détail d'une vente</h1>		
+		
+    <div class="detail-info">
+        <div class="left-column">
+            <p>Article : <span th:text="${enchere.nom}"></span></p>
+            <p>Catégorie : <span th:text="${enchere.categorie.libelle}"></span></p>
+            <p>Description : <span th:text="${enchere.description}"></span></p>
+            <p>Retrait : <span th:text="${enchere.adresse}"></span></p>
+            <p>Vendeur : <span th:text="${enchere.utilisateur.pseudo}"></span></p>
+        </div>
+        
+        <div class="right-column">
+            <p>Mise à prix : <span th:text="${enchere.prixInitial} + ' point(s)'"></span></p>
+            <p>Meilleure offre : <span th:text="${enchere.prixInitial + ' points par ' + enchere.utilisateur.pseudo}"></span></p>
+            <p>Fin de l'enchère : <span th:text="${#temporals.format(enchere.dateFinEncheres, 'dd/MM/yyyy')}"></span></p>
+        </div>
+    </div>
+
+    <div class="return-button" th:if="${enchere.utilisateur.pseudo == utilisateurConnecte}">
+        <form th:action="@{'/'}" method="get">
+            <button type="submit">Retour</button>
+        </form>
+    </div>
+		
+    <div class="enchere-form" th:if="${enchere.utilisateur.pseudo != utilisateurConnecte}">
+        <form action="/encheres/enchere" method="POST">
+            <input type="hidden" name="enchereId" th:value="${enchere.id}">
+            <label for="montant">Mon enchère :</label>
+            <input type="number" id="montant" name="montant" min="${enchere.prixVente + 1}" required>
+            <button type="submit">Enchérir</button>
+        </form>
+    </div>
+</main>
+</html>

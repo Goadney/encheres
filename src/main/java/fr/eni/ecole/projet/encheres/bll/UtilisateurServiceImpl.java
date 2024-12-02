@@ -1,5 +1,7 @@
 package fr.eni.ecole.projet.encheres.bll;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import fr.eni.ecole.projet.encheres.bo.Adresse;
@@ -81,6 +83,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        throw new CantFindUser("Cet utilisateur n'existe pas");	
 	    }		
     }
+	
+	public Utilisateur getUtilisateurConnecte() {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.getPrincipal() instanceof Utilisateur) {
+	        return (Utilisateur) authentication.getPrincipal();
+	    }
+	    return null;
+	}
 
 
 

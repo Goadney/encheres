@@ -1,5 +1,7 @@
 package fr.eni.ecole.projet.encheres.bo;
 
+import java.io.Serializable;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +16,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "utilisateurs")
-public class Utilisateur {
+public class Utilisateur implements Serializable {
 
     @Id
     @Column(name = "pseudo", nullable = false, unique = true)

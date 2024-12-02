@@ -2,94 +2,81 @@
 <!-- Mise en place du layout -->
 <!-- Accueil comme titre de page -->
 <!-- la balise main définit par la classe de CSS 'center-main' comme paramètre contenuPage -->
-<html 	xmlns:th="http://www.thymeleaf.org"
-		data-th-replace="~{layouts/layout :: layout-encheres( 
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-encheres( 
 						titrePage=~{:: title},
 						contenuPage=~{:: main},
 						ressourcesSupp=~{:: #ressources-css})}">
-						
-<!-- Accueil comme titre de page -->
+
 <head>
 <title>Accueil</title>
 </head>
 
 <body>
-<main>
-	
-	<form action="/encheres" method="POST">
-			<h1 style="text-align: left;" data-th-text="#{index.h1}">Liste des enchères</h1>
-			
-		<div>
-            <label for="recherche">Filtres :</label>
-            <input type="text" id="recherche" name="recherche" placeholder="Le nom de l'article contient" required>
-        </div>
-        <div>
-        	<label for="categorie">Catégorie :</label>
-            <select id="categorie" name="categorie">
-            	<option value="" selected>Toutes</option>
-       		 	<option th:each="categorie : ${categories}" 
-                		th:value="${categorie.id}" 
-                		th:text="${categorie.libelle}">
-                </option>
-            </select>
-        </div>
-           
-       <div class="form-actions">  
-       	 	<button type="submit">Rechercher</button>
-       		<button type="reset">Annuler</button>
-    	</div>
-	
-		<div>		
-				<input type="checkbox" name="achats">
-				<label for="achats">Achats</label>
+	<main>
+
+		<form action="/encheres" method="POST">
+			<h1 class="page-titre"> Liste
+				des enchères </h1>
+
+		<div class="search-form">
+    <label for="recherche">Filtres :</label>
+    <input type="text" id="recherche" name="recherche" placeholder="Le nom de l'article contient" required>
+    <button class="actions" type="submit">Rechercher</button>
+</div>
+
+<div class="search-form">
+    <label for="categorie">Catégorie :</label>
+    <select id="categorie" name="categorie">
+        <option value="" selected>Toutes</option>
+        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.libelle}"></option>
+    </select>
+    <button class="actions" type="reset">Annuler</button>
+</div>
+
+
+			<div class="search-form">
+				<input type="checkbox" name="achats"> <label for="achats">Achats</label>
 				<select id="achats" name="achats">
-               	<option value="ouvertes">Enchères ouvertes</option>
-                <option value="achats-en-cours">Mes enchères en cours</option>
-                <option value="remportees">Mes enchères remportées</option>
-                </select>
-		</div>
+					<option value="ouvertes">Enchères ouvertes</option>
+					<option value="achats-en-cours">Mes enchères en cours</option>
+					<option value="remportees">Mes enchères remportées</option>
+				</select>
 	
-		<div>		
-				<input type="checkbox" name="ventes">
-				<label for="ventes">Mes ventes</label>
-				<select id="ventes" name="ventes">
-               	<option value="ventes-en-cours">Mes ventes en cours</option>
-                <option value="en-cours">Mes ventes non débutées</option>
-                <option value="remportees">Mes ventes terminées</option>
-                </select>
-		</div>
-		
-<!-- 		<ul> 
-			<li data-th-each="enchere : ${encheres}">
-	
-			 <p>Nom : <span data-th-text="${articleAVendre.nom}"></span></p>
-   			 <p>Prix : <span data-th-text="${articleAVendre.prixInitial} + 'points'"></span></p>
-    		 <p>Fin de l'enchère : <span data-th-text="${articleAVendre.dateFinEncheres}"></span></p>
-    	 	<p>Vendeur : <span data-th-text="${articleAVendre.utilisateur.pseudo}"></span></p>
-    	 	</li>
-    	 </ul>-->
-    	 <table>
-    	 	<thead>
-    	 		<!-- 	<img src="" alt="photo article">  -->
-    	 		<tr>
-    	 			<th>Nom :</th>
-    	 			<th>Prix :</th>
-    	 			<th>Fin de l'enchère :</th>
-    	 			<th>Vendeur :</th>
-    	 		</tr>
-    	 	</thead>
-    	 	<tbody>
-    	 		<tr data-th-each="enchere : ${encheres}">
-    	 			<td data-th-text="${enchere.nom}"></td>
-    	 			<td data-th-text="${enchere.prixInitial} + 'point(s)'"></td>
-    	 			<td data-th-text="${enchere.dateFinEncheres}"></td>
-    	 			<td data-th-text="${enchere.utilisateur.pseudo}"></td>
-    	 	</tbody>
-    	 
-    	 </table>
-	</form>	
-</main>
+				<input type="checkbox" name="ventes"> <label for="ventes">Mes
+					ventes</label> <select id="ventes" name="ventes">
+					<option value="ventes-en-cours">Mes ventes en cours</option>
+					<option value="en-cours">Mes ventes non débutées</option>
+					<option value="remportees">Mes ventes terminées</option>
+				</select>
+			</div>
+
+			<div class="enchere-container">
+				<div class="enchere-box" th:each="enchere : ${encheres}">
+					<img class="enchere-image" th:src="@{'/images/enchere-image.jpg'}"
+						alt="Image de l'enchère"> 
+					<a th:href="@{'/encheres/' + ${enchere.id}}">
+						<div class="enchere-details">
+							<p>
+								Nom : <span data-th-text="${enchere.nom}"></span>
+							</p>
+							<p>
+								Prix : <span data-th-text="${enchere.prixInitial} + ' point(s)'"></span>
+							</p>
+							<p>
+								Fin de l'enchère : <span
+									data-th-text="${enchere.dateFinEncheres}"></span>
+							</p>
+							<p>
+								Vendeur : <span data-th-text="${enchere.utilisateur.pseudo}"></span>
+							</p>
+						</div>
+					</a>
+				</div>
+			</div>
+
+		</form>
+	</main>
 </body>
 </html>
 
-    

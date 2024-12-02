@@ -76,13 +76,9 @@ public class Adresse {
 
     @Override
     public String toString() {
-        return "Adresse{" +
-                "id=" + NoAdresse +
-                ", rue='" + rue + '\'' +
-                ", codePostal='" + codePostal + '\'' +
-                ", ville='" + ville + '\'' +
-                '}';
+        return rue + " " + codePostal + " " + ville;
     }
+
 
 	public Boolean getAddresse_eni() {
 		return adresseEni;

@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -16,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
+import fr.eni.ecole.projet.encheres.bo.Utilisateur;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -25,6 +29,7 @@ public class SecurityConfig {
     public SecurityConfig(UtilisateurServiceImpl utilisateurService) {
         this.utilisateurService = utilisateurService;
     }
+    
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -50,37 +55,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http           
-		        .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/css/*", "/images/*").permitAll()
-                .requestMatchers("/encheres").permitAll()
-                .requestMatchers("/utilisateurs/admin/delete/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/accueil").hasAnyRole("USER", "ADMIN")
-            	.requestMatchers(HttpMethod.GET, "/encheres/details").hasAnyRole("USER", "ADMIN")
-            	.requestMatchers(HttpMethod.POST, "/encheres/details").hasAnyRole("USER", "ADMIN")
-            	.requestMatchers("/utilisateurs/supprimer").hasAnyRole("ADMIN")
-            	.requestMatchers("/users/profil").hasAnyRole("USER")
-
-            	.requestMatchers("/utilisateurs/desactiver").hasAnyRole("ADMIN") 
-				.anyRequest().permitAll()
-            )
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/css/**", "/images/**").permitAll() 
+                .requestMatchers("/login", "/register").permitAll()
+                .requestMatchers(HttpMethod.GET, "/encheres/**").hasAnyRole("USER", "ADMIN") 
+                .requestMatchers("/utilisateurs/admin/delete/*").hasRole("ADMIN") 
+                .requestMatchers("/users/profil").hasRole("USER") 
+                .anyRequest().authenticated() 
+                )
             .formLogin(form -> form
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/", true)
-            )
+                .loginPage("/login").permitAll() 
+                .defaultSuccessUrl("/", true) 
+                )
             .logout(logout -> logout
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
-                .permitAll()
+                .logoutSuccessUrl("/").permitAll()
             );
 
         return http.build();
     }
-    
-    
 
-
+  
+ 
 }

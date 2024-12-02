@@ -12,7 +12,7 @@ public interface UtilisateurService {
 	
 	Utilisateur findByPseudo(String pseudo);
 	
-	Utilisateur findByEmail(String findByEmail);
+	Utilisateur findByEmail(String email);
 	
 	void update(Utilisateur user);
 	

@@ -35,6 +35,10 @@ public class Enchere implements Serializable {
 	@JoinColumn(name = "id_utilisateur", referencedColumnName = "pseudo" , insertable = false, updatable = false)
 	private Utilisateur utilisateur;
 	
+	@ManyToOne
+    @JoinColumn(name = "no_adresse_retrait", referencedColumnName = "no_adresse", insertable = false, updatable = false)
+    private Adresse adresse;
+	
 	
 	public Enchere() {
 
@@ -42,12 +46,13 @@ public class Enchere implements Serializable {
 
 
 	public Enchere(EnchereId id, @NotBlank(message = "La date de l'enchère est obligatoire") LocalDateTime date,
-			ArticleAVendre articleAVendre, Utilisateur utilisateur) {
+			ArticleAVendre articleAVendre, Utilisateur utilisateur, Adresse adresse) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.articleAVendre = articleAVendre;
 		this.utilisateur = utilisateur;
+		this.adresse = adresse;
 	}
 
 
@@ -89,6 +94,16 @@ public class Enchere implements Serializable {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
+	
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
+
+
 
 
 	@Override
@@ -103,6 +118,8 @@ public class Enchere implements Serializable {
 		builder.append(", utilisateur=");
 		builder.append(utilisateur);
 		builder.append("]");
+		builder.append(", adresse=");
+		builder.append(adresse);
 		return builder.toString();
 	}
 
