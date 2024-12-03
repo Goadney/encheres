@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.eni.ecole.projet.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.ecole.projet.encheres.bo.Adresse;
@@ -145,6 +146,55 @@ public class UtilisateurController {
             return "/profil/modifier";
         }
     }
+    
+    @GetMapping("/profil/modifier/password")
+    public String afficherFormulaireModificationMotDePasse(Model model) {
+        try {
+            return "profil-modify-password";  // Utilisez une vue qui correspond à la modification du mot de passe
+        } catch (Exception e) {
+            return "profil-modify-password";
+        }
+    }
+
+
+    @PostMapping("/profil/modifier/password")
+    public String modifierMotDePasse(
+            @RequestParam("old_password") String ancienMotDePasse,
+            @RequestParam("new_password") String nouveauMotDePasse,
+            @RequestParam("new_password_confirmation") String confirmationMotDePasse,
+            Model model) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return "redirect:/";
+            }
+
+            String pseudo = authentication.getName();
+            Utilisateur utilisateur = utilisateurService.findByPseudo(pseudo);
+
+            if (!passwordEncoder.matches(ancienMotDePasse, utilisateur.getMotDePasse())) {
+                model.addAttribute("error", "Le mot de passe actuel est incorrect.");
+                return "profil-modify";
+            }
+
+            if (!nouveauMotDePasse.equals(confirmationMotDePasse)) {
+                model.addAttribute("error", "La confirmation du mot de passe ne correspond pas.");
+                return "profil-modify";
+            }
+
+            // Mise à jour du mot de passe
+            utilisateur.setMotDePasse(passwordEncoder.encode(nouveauMotDePasse));
+            utilisateurService.updatePassword(utilisateur);
+
+            model.addAttribute("message", "Mot de passe modifié avec succès.");
+            return "redirect:/users/profil";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erreur lors de la modification du mot de passe : " + e.getMessage());
+            return "profil-modify";
+        }
+    }
+
+
     
     @GetMapping("/profil/supprimer")
     public String supprimerCompte(Model model) {

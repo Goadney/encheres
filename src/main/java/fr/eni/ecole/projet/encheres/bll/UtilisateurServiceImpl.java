@@ -42,6 +42,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		
 	}
 	
+	
+	
 	@Override
 	public void update(Utilisateur utilisateur) {
 	    // Validation et mise à jour de l'utilisateur
@@ -91,6 +93,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        return (Utilisateur) authentication.getPrincipal();
 	    }
 	    return null;
+	}
+
+	@Override
+	public void updatePassword(Utilisateur user) {
+		
+		daoUser.save(user);
+		
 	}
 
 

@@ -17,5 +17,7 @@ public interface UtilisateurService {
 	void update(Utilisateur user);
 	
 	void delete(String pseudo);
+	
+	void updatePassword(Utilisateur user);
  
 }
